@@ -1,0 +1,27 @@
+<?php
+/**
+ * @var $this Tool\View
+ */
+?>
+<div class="span5">
+    <?php echo $this->renderView('form') ?>
+</div>
+<div class="span5 screen output" id="result">
+    <?php
+    /**
+     * @var $this Tool\View
+     */
+    echo $this->output;
+    ?>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function(){
+        $('#result').data('success', function(response){
+            if(response.output){
+                $('#result').html(response.output);
+            }
+        });
+
+    });
+</script>
