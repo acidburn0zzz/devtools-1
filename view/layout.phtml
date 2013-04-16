@@ -12,13 +12,6 @@
     <meta name="description" content="">
     <meta name="author" content="3axap4eHko">
 
-    <style type="text/css">
-        body {
-            background-color: #252525;
-            color: #ffffff;
-        }
-    </style>
-
     <!-- Le styles -->
     <link href="/css/bootstrap.css" rel="stylesheet">
     <link href="/css/bootstrap-responsive.css" rel="stylesheet">
@@ -37,44 +30,50 @@
     <link rel="shortcut icon" href="../assets/ico/favicon.png">
     -->
     <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script type="text/javascript" src="/ace/ace.js" charset="utf-8"></script>
 </head>
 
 <body>
 
 <div class="container">
-
         <div class="navbar navbar-inverse">
             <div class="navbar-inner">
                 <div class="container">
                     <a href="//tools" class="brand">Developer Tools</a>
                     <ul class="nav">
-                        <li><a href="//js.tools">Js</a></li>
-                        <li><a href="//php.tools">Php</a></li>
-                        <li><a href="//mysql.tools">Mysql</a></li>
-                        <li><a href="//tools">About</a></li>
+                        <li><a href="#javascript">JS</a></li>
+                        <li><a href="#php">PHP</a></li>
+                        <li><a href="#mysql">MYSQL</a></li>
+                        <li><a href="#about">ABOUT</a></li>
                     </ul>
                 </div>
             </div>
         </div><!-- /.navbar -->
 
-    <div class="hero-unit">
-        <div class="row">
-            <?php echo $this->getContent() ?>
+    <div class="row">
+        <div id="messages"></div>
+        <div id="editor" class="output span5" data-code="<?php echo htmlentities(json_encode(array('code' => $this->code))) ?>"></div>
+        <div id="result" class="output span5"><?php echo $this->output ?></div>
+    </div>
+    <div class="row">
+        <div class="span5">
+            <a href="#" class="btn btn-inverse" id="reset-btn">reset</a>
+            <a href="#" class="btn btn-large btn-danger pull-right" id="eval-btn">eval</a>
+
         </div>
     </div>
-    <hr>
-
+</div> <!-- /container -->
+<hr>
+<div class="container">
     <div class="footer">
         <p>&copy; Company 2013</p>
     </div>
-
-</div> <!-- /container -->
+</div>
 
 <!-- Le javascript
 ================================================== -->
 <!-- Placed at the end of the document so the pages load faster -->
 <script type="text/javascript" src="/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="/js/main.js"></script>
-
 </body>
 </html>

@@ -4,17 +4,36 @@
  * @author: Ivan Zaharchenko ( 3axap4eHko@gmail.com )
  * @file:
  */
-function log(text) {
-    $('#result').html(text);
+function getController(){
+    return (document.location.href.match(/#(\w+)/i) || {1:'about'})[1];
 }
 
+
 $(document).ready(function () {
+    $('ul.nav a').click(function(){
+        $('ul.nav li').removeClass('active');
+        $(this).parents('li').addClass('active');
+    });
+    $('ul.nav a[href="#'+getController()+'"]').click();
+
+
+
+    var editor = ace.edit("editor");
+    editor.setTheme("ace/theme/twilight");
+    editor.getSession().setMode("ace/mode/php");
+    editor.setValue($('#editor').data('code').code);
+    editor.clearSelection();
+
     $('#eval-btn').on('click', function () {
         $.ajax({
             url    : '/',
-            method : 'post',
-            data   : {code: $('#code').val()},
-            success: $('#result').data('success')
+            type : 'post',
+            data   : {code: editor.getValue()},
+            success: function(response){
+                if(response.output) {
+                    $('#result').html(response.output);
+                }
+            }
         });
         return false;
     });
@@ -26,5 +45,4 @@ $(document).ready(function () {
     });
 
     $('.navbar-inner ul.nav li a[href=\\/\\/'+document.domain.replace(/(\.)/,'\\$1')+']').parent().attr('class', 'active');
-
 });

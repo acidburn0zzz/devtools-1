@@ -19,7 +19,7 @@ class PhpController extends AbstractController
         if ($this->request->isAjax()) {
             $code = $this->request->getRequest('code', '');
             ob_start();
-            eval($code);
+            eval('?>' . $code);
             $this->view->output = ob_get_contents();
             ob_clean();
             $this->store->save($code);

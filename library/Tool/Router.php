@@ -17,4 +17,11 @@ class Router {
         return 'index';
     }
 
+    public function __call($name, $args)
+    {
+        if(preg_match('',$name)) {
+
+        }
+    }
+
 }
