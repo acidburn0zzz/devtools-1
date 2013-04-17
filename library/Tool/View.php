@@ -23,9 +23,9 @@ class View
 
     private $renderType = self::RENDER_HTML;
 
-    public function __construct()
+    public function __construct($viewDir)
     {
-        $this->viewDir = realpath(__DIR__ . '/../../view');
+        $this->viewDir = $viewDir;
     }
 
     public function setContentView($contentView)

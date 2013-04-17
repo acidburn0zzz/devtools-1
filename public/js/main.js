@@ -8,15 +8,12 @@ function getController(){
     return (document.location.href.match(/#(\w+)/i) || {1:'about'})[1];
 }
 
-
 $(document).ready(function () {
     $('ul.nav a').click(function(){
         $('ul.nav li').removeClass('active');
         $(this).parents('li').addClass('active');
     });
     $('ul.nav a[href="#'+getController()+'"]').click();
-
-
 
     var editor = ace.edit("editor");
     editor.setTheme("ace/theme/twilight");

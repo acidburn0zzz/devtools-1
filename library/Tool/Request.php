@@ -5,30 +5,79 @@
  * @author: Ivan Zaharchenko ( 3axap4eHko@gmail.com )
  * @file: Request.php
  */
- 
+
 
 namespace Tool;
 
 
-class Request {
+class Request
+{
+    const METHOD_GET     = 'get';
+    const METHOD_POST    = 'post';
+    const METHOD_PUT     = 'put';
+    const METHOD_DELETE  = 'delete';
+    const METHOD_HEAD    = 'head';
+    const METHOD_OPTIONS = 'options';
+    const METHOD_TRACE   = 'trace';
+    const METHOD_CONNECT = 'connect';
 
-    private $method;
-    private $isAjax;
+    /**
+     * @var ArrayObject
+     */
+    public $get;
+
+    /**
+     * @var ArrayObject
+     */
+    public $post;
+
+    /**
+     * @var ArrayObject
+     */
+    public $request;
+
+    /**
+     * @var ArrayObject
+     */
+    public $server;
+
+    /**
+     * @var ArrayObject
+     */
+    public $cookie;
 
     public function __construct()
     {
-        $this->method = strtolower($_SERVER['REQUEST_METHOD']);
-        $this->isAjax = isset($_SERVER['HTTP_X_REQUESTED_WITH']) && (strtolower($_SERVER['HTTP_X_REQUESTED_WITH'])==='xmlhttprequest');
+        $this->server = new ArrayObject($_SERVER);
+        $this->server->setFilter('strtolower');
+
+        $this->get = new ArrayObject($_GET);
+        $this->post = new ArrayObject($_POST);
+        $this->request = new ArrayObject($_REQUEST);
+        $this->cookie = new ArrayObject($_COOKIE);
+
+        $this->method = $this->server->get('REQUEST_METHOD');
+        $this->isAjax = $this->server->get('HTTP_X_REQUESTED_WITH') === 'xmlhttprequest';
+    }
+
+    /**
+     * @param string|array $methods
+     *
+     * @return bool
+     */
+    public function isRequestMethods($methods)
+    {
+        return in_array($this->method, (array)$methods, false);
     }
 
     public function isPost()
     {
-        return $this->method ==='post';
+        return $this->method === 'post';
     }
 
     public function isGet()
     {
-        return $this->method ==='get';
+        return $this->method === 'get';
     }
 
     public function isAjax()
@@ -36,24 +85,8 @@ class Request {
         return $this->isAjax;
     }
 
-    private function get($array, $name, $default = null)
+    public function getURI()
     {
-        return isset($array[$name]) ? $array[$name] : $default;
+        return $this->server->get('REQUEST_URI','/');
     }
-
-    public function getQuery($name, $default = null)
-    {
-        return $this->get($_GET, $name, $default);
-    }
-
-    public function getPost($name, $default)
-    {
-        return $this->get($_POST, $name, $default);
-    }
-
-    public function getRequest($name, $default)
-    {
-        return $this->get($_REQUEST, $name, $default);
-    }
-
 }

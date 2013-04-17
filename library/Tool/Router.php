@@ -5,23 +5,43 @@
  * @author: Ivan Zaharchenko ( 3axap4eHko@gmail.com )
  * @file: Router.php
  */
- 
+
 
 namespace Tool;
 
 
-class Router {
+class Router
+{
+    /**
+     * @var Route[]
+     */
+    protected $routes;
+    /**
+     * @var Route
+     */
+    protected $matchedRoute;
 
-    public function getAction()
+    public function __construct()
     {
-        return 'index';
+        $this->routes  = new ArrayObject();
     }
 
-    public function __call($name, $args)
+    public function add($name, $pattern, $methods = [])
     {
-        if(preg_match('',$name)) {
-
+        if ($this->routes->has($name)) {
+            throw new \Exception(sprintf('Route %s already exists', $name));
         }
+        $this->routes->set($name, new Route($name, $pattern, $methods));
+        return $this;
     }
 
+    public function match(Request $request)
+    {
+        foreach($this->routes as $route) {
+            if($route->match($request)) {
+                return $this->matchedRoute = $route;
+            }
+        }
+        return false;
+    }
 }
