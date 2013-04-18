@@ -66,7 +66,7 @@ class Route
                 $replaces[1][]                = sprintf('%1$s(?<%2$s>%3$s)%1$s',$mode,$constrain,$regexp);
             }
         }
-        $this->expression = sprintf('#%s/?#',str_replace($replaces[0], $replaces[1], $pattern));
+        $this->expression = sprintf('#^%s/?$#',str_replace($replaces[0], $replaces[1], $pattern));
         return $this;
     }
 

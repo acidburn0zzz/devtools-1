@@ -10,16 +10,30 @@ ini_set('display_errors', 1);
 require_once __DIR__ . '/../library/Tool/Application.php';
 use Tool\Application as App;
 
-App::factory(realpath(__DIR__ . '/../'))
+$app = App::factory(realpath(__DIR__ . '/../'));
 
-->addAction('default', '/',function (App $app) {
+$app->addAction('default',
+                '/',
+    function (App $app) {
+        $app->view->setContentView('code');
 
-})
+    });
 
-->addAction('php', '(get:post)/php',function (App $app) {
+$app->addAction('php', '(post)/php',
+    function (App $app) {
+        
+    });
+$app->addAction('php', '(get)/php',
+    function (App $app) {
 
-})
-->run();
+    });
+$app->postAction(function (App $app) {
+    if ($app->request->isAjax()) {
+        $app->view->setRenderType(\Tool\View::RENDER_JSON);
+    }
+});
+
+$app->run();
 
 function debug()
 {

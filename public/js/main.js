@@ -8,22 +8,31 @@ function getController(){
     return (document.location.href.match(/#(\w+)/i) || {1:'about'})[1];
 }
 
-$(document).ready(function () {
-    $('ul.nav a').click(function(){
-        $('ul.nav li').removeClass('active');
-        $(this).parents('li').addClass('active');
-    });
-    $('ul.nav a[href="#'+getController()+'"]').click();
+var controller = getController();
 
+$(document).ready(function () {
     var editor = ace.edit("editor");
     editor.setTheme("ace/theme/twilight");
     editor.getSession().setMode("ace/mode/php");
     editor.setValue($('#editor').data('code').code);
     editor.clearSelection();
 
+    var allowModules = ['php','javascript', 'sql'];
+
+    $('ul.nav a').click(function(){
+        controller = getController();
+        $('ul.nav li').removeClass('active');
+        $(this).parents('li').addClass('active');
+        if(allowModules.indexOf(controller)!==-1) {
+            editor.getSession().setMode("ace/mode/"+controller);
+        }
+    });
+
+    $('ul.nav a[href="#'+controller+'"]').click();
+
     $('#eval-btn').on('click', function () {
         $.ajax({
-            url    : '/',
+            url    : '/'+controller,
             type : 'post',
             data   : {code: editor.getValue()},
             success: function(response){

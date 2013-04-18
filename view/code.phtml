@@ -1,12 +1,11 @@
 <div class="row">
     <div id="messages"></div>
-    <div id="editor" class="output span5" data-code="<?php echo htmlentities(json_encode(array('code' => $this->code))) ?>"></div>
+    <div id="editor" class="output span6" data-code="<?php echo htmlentities(json_encode(array('code' => $this->code))) ?>"></div>
     <div id="result" class="output span5"><?php echo $this->output ?></div>
 </div>
 <div class="row">
-    <div class="span5">
+    <div class="span6">
         <a href="#" class="btn btn-danger" id="reset-btn">reset</a>
-        <a href="#" class="btn btn-large btn-success pull-right" id="eval-btn">eval</a>
-
+        <a href="#" class="btn btn-large btn-success pull-right" id="eval-btn">EVAL</a>
     </div>
 </div>

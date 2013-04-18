@@ -27,36 +27,37 @@ class Application
     /**
      * @var Response
      */
-    protected $response;
+    public $response;
 
     /**
      * @var View
      */
-    protected $view;
+    public $view;
 
     /**
      * @var ArrayObject
      */
     protected $actions;
 
-    protected $options = array(
-        'applicationDir' => __DIR__
-    );
+    /**
+     * @var ArrayObject
+     */
+    protected $options;
+    /**
+     * @var callable
+     */
+    protected $postAction;
 
-    public function __construct($options)
+    public function __construct($appDir)
     {
         spl_autoload_register(function ($className) {
             require_once dirname(__DIR__) . DIRECTORY_SEPARATOR . str_replace('\\',
                                                                               DIRECTORY_SEPARATOR,
                                                                               $className) . '.php';
         });
-        $this->setOptions($options);
+        $this->options = new ArrayObject();
+        $this->options->set('appDir', rtrim($appDir, '/\\'));
         $this->init();
-    }
-
-    protected function setOptions()
-    {
-
     }
 
     final protected function init()
@@ -64,7 +65,7 @@ class Application
         $this->request  = new Request();
         $this->router   = new Router();
         $this->response = new Response();
-        $this->view     = new View($applicationDir . '/view');
+        $this->view     = new View($this->options->get('appDir') . '/view');
         $this->actions  = new ArrayObject();
     }
 
@@ -101,6 +102,19 @@ class Application
     public function notFoundAction($action)
     {
         $this->actions->set(self::ACTION_NOT_FOUND, $action);
+
+        return $this;
+    }
+
+    /**
+     * @param callable $postAction
+     *
+     * @return $this
+     */
+    public function postAction($postAction)
+    {
+        $this->postAction = $postAction;
+
         return $this;
     }
 
@@ -112,15 +126,17 @@ class Application
         } else {
             $actionName = $route->getName();
         }
-        if(!$this->actions->has($actionName)) {
+        if (!$this->actions->has($actionName)) {
             throw new \Exception(sprintf('Action %s not found', $actionName));
         }
-        if($this->request->isAjax()) {
+        if ($this->request->isAjax()) {
             $this->view->setRenderType(View::RENDER_JSON);
         }
         $action = $this->actions->get($actionName);
         call_user_func_array($action, array($this));
-        \debug($this->view);
+        if (is_callable($this->postAction)) {
+            call_user_func_array($this->postAction, array($this));
+        }
         $this->response->setContent($this->view->render());
         $this->response->send();
     }

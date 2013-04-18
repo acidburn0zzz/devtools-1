@@ -44,4 +44,9 @@ class Router
         }
         return false;
     }
+
+    public function getMatchedRoute()
+    {
+        return $this->matchedRoute;
+    }
 }

@@ -65,6 +65,14 @@ class ArrayObject extends \ArrayObject
         return $this;
     }
 
+    public function merge()
+    {
+        $args = func_get_args();
+        array_unshift($args,$this->getArrayCopy());
+        $this->exchangeArray(call_user_func_array('array_merge',$args));
+        return $this;
+    }
+
     public function clear()
     {
         $this->exchangeArray(array());
