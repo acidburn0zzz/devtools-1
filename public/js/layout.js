@@ -4,6 +4,18 @@ function getController(url) {
     return ((url || document.location.href).match(/#(\w+)/i) || {1: 'about'})[1];
 }
 
+function showAlert(message, success) {
+    var alertClass = success ? 'alert-info' : 'alert-danger';
+    var title = success ? 'Success!' : 'Error!';
+
+    $('#messages').append(
+        $('<div>', {class: 'span10 alert '+alertClass})
+            .append($('<button>', {type: 'button', class: 'close', 'data-dismiss': 'alert', html: '&times;'}))
+            .append($('<strong>', {html: title}))
+            .append(message)
+    );
+}
+
 function getConfig() {
     var key, value, config = {};
     $('.config input,.config select,.config textarea').each(function () {

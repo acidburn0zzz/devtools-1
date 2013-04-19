@@ -5,28 +5,18 @@
  * @file:
  */
 
-function loadCode(editor, controller) {
-    $.ajax({
-        url    : '/code/' + controller,
-        type   : 'post',
-        success: function (response) {
-            editor.getSession().setMode("ace/mode/" + controller);
-            editor.setValue(response.code);
-            editor.clearSelection();
-        }
-    });
-}
-
 function evalCode(editor, controller) {
     $.ajax({
         url    : '/' + controller,
         type   : 'post',
         data   : {code: editor.getValue()},
         success: function (response) {
+            $('.alert').remove();
             if (response.output) {
                 $('#result').html(response.output);
+            } else {
+                showAlert(response.message, false)
             }
-            $('#message').html(response.message);
         }
     });
 }
