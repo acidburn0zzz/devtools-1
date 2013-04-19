@@ -42,6 +42,7 @@ class Route
     {
         $this->setName($name);
         $this->setPattern($pattern);
+        $this->matches = new ArrayObject();
     }
 
     public function setPattern($pattern)
@@ -82,11 +83,15 @@ class Route
 
     public function match(Request $request)
     {
-        return (!count($this->methods) || $request->isRequestMethods($this->methods)) && preg_match($this->expression, $request->getURI(), $this->matches);
+        $isMatch = (!count($this->methods) || $request->isRequestMethods($this->methods)) && preg_match($this->expression, $request->getURI(), $matches);
+        if($isMatch) {
+            $this->matches->exchangeArray(array_intersect_key($matches, $this->constrains));
+        }
+        return $isMatch;
     }
 
     public function getParams()
     {
-        return array_intersect_key($this->matches, $this->constrains);
+        return $this->matches;
     }
 }

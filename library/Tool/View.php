@@ -16,6 +16,7 @@ class View
     const RENDER_HTML = 'html';
     const RENDER_JSON = 'json';
     const RENDER_XML  = 'xml';
+    const RENDER_VIEW  = 'view';
 
     private $viewDir;
     private $vars = array();
@@ -31,16 +32,19 @@ class View
     public function setContentView($contentView)
     {
         $this->contentView = $contentView;
+        return $this;
     }
 
     public function setRenderType($renderType)
     {
         $this->renderType = $renderType;
+        return $this;
     }
 
     public function set($name, $value)
     {
         $this->vars[$name] = $value;
+        return $this;
     }
 
     public function renderView($view)
@@ -65,6 +69,9 @@ class View
                 break;
             case self::RENDER_XML:
                 return json_encode($this->vars);
+                break;
+            case self::RENDER_VIEW:
+                return $this->getContent();
                 break;
             default:
 

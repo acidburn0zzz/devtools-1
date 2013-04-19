@@ -1,0 +1,23 @@
+<?php
+/** @var Tool\ArrayObject $rows  */
+$rows = $this->rows;
+if(!!$rows->count()) :?>
+<table class="table">
+    <thead>
+    <tr>
+        <?php foreach($rows->get(0) as $column => $row):?>
+            <th><?php echo $column ?></th>
+        <?php endforeach ?>
+    </tr>
+    </thead>
+    <tbody>
+    <?php foreach($rows as $row):?>
+        <tr>
+        <?php foreach($row as $value):?>
+            <td><?php echo $value ?></td>
+        <?php endforeach ?>
+        </tr>
+    <?php endforeach ?>
+    </tbody>
+</table>
+<?php endif ?>

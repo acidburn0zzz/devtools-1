@@ -35,6 +35,11 @@ class Application
     public $view;
 
     /**
+     * @var Store
+     */
+    public $store;
+
+    /**
      * @var ArrayObject
      */
     protected $actions;
@@ -62,10 +67,12 @@ class Application
 
     final protected function init()
     {
+        set_include_path($this->options->get('appDir'));
         $this->request  = new Request();
         $this->router   = new Router();
         $this->response = new Response();
         $this->view     = new View($this->options->get('appDir') . '/view');
+        $this->store    = new Store($this->options->get('appDir') . '/data');
         $this->actions  = new ArrayObject();
     }
 
@@ -129,8 +136,11 @@ class Application
         if (!$this->actions->has($actionName)) {
             throw new \Exception(sprintf('Action %s not found', $actionName));
         }
+        $this->store->setFileName($actionName);
         if ($this->request->isAjax()) {
             $this->view->setRenderType(View::RENDER_JSON);
+        } else {
+            $this->view->setContentView('error');
         }
         $action = $this->actions->get($actionName);
         call_user_func_array($action, array($this));

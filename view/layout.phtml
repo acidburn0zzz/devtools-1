@@ -34,26 +34,53 @@
 </head>
 
 <body>
-
-<div class="container">
+<div id="wrap">
+    <div class="container">
         <div class="navbar navbar-inverse">
             <div class="navbar-inner">
                 <div class="container">
                     <a href="//tools" class="brand">Developer Tools</a>
                     <ul class="nav">
-                        <li><a href="#javascript">JS</a></li>
-                        <li><a href="#php">PHP</a></li>
-                        <li><a href="#mysql">MYSQL</a></li>
-                        <li><a href="#about">ABOUT</a></li>
+                        <li><a href="/#javascript" class="navigation">JS</a></li>
+                        <li><a href="/#php" class="navigation">PHP</a></li>
+                        <li><a href="/#sql" class="navigation">SQL</a></li>
+                        <li><a href="/#about" class="navigation">ABOUT</a></li>
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown"><b class="caret"></b> CONFIG </a>
+                            <ul class="dropdown-menu config config-dropdown">
+                                <li class="nav-header">Database</li>
+                                <li>
+                                    <input type="text" id="dbName" placeholder="DB Name">
+                                </li>
+                                <li>
+                                    <input type="text" id="dbHost" placeholder="DB Host">
+                                </li>
+                                <li>
+                                    <input type="text" id="dbUsername" placeholder="DB Username">
+                                </li>
+                                <li>
+                                    <input type="text" id="dbPassword" placeholder="DB Password">
+                                </li>
+                                <li class="divider"></li>
+                                <li>
+                                    <div>
+                                        <a class="btn btn-success pull-right config-save">OK</a>
+                                        <a class="btn btn-danger">Cancel</a>
+                                    </div>
+                                </li>
+                            </ul>
+                        </li>
                     </ul>
                 </div>
             </div>
         </div><!-- /.navbar -->
-    <div id="content" class="span12">
-            <?php echo $this->getContent() ?>
-    </div>
-</div> <!-- /container -->
-<hr>
+        <div class="span12">
+            <div class="row" id="messages"></div>
+            <div id="content"></div>
+        </div>
+    </div> <!-- /container -->
+</div>
+<hr/>
 <div class="container">
     <div class="footer">
         <p>&copy; Company 2013</p>
@@ -64,6 +91,7 @@
 ================================================== -->
 <!-- Placed at the end of the document so the pages load faster -->
 <script type="text/javascript" src="/js/bootstrap.min.js"></script>
-<script type="text/javascript" src="/js/main.js"></script>
+<script type="text/javascript" src="/js/layout.js"></script>
+
 </body>
 </html>

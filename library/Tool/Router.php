@@ -49,4 +49,11 @@ class Router
     {
         return $this->matchedRoute;
     }
+
+    public function getParam($name, $default = null)
+    {
+        return $this->matchedRoute->getParams()->get($name, $default);
+    }
+
+
 }

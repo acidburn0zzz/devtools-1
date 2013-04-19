@@ -12,22 +12,40 @@ namespace Tool;
 
 class Store {
 
+    private $storeDir;
     private $fileName;
 
-    public function __construct($fileName)
+    public function __construct($storeDir)
+    {
+        $this->storeDir = rtrim($storeDir,'\\/');
+    }
+
+    public function setFileName($fileName)
     {
         $this->fileName = $fileName;
-        touch($this->fileName);
+        touch($this->getFilePath());
+        return $this;
+    }
+
+    public function getFileName()
+    {
+        return $this->fileName;
+    }
+
+    public function getFilePath()
+    {
+        return $this->storeDir . DIRECTORY_SEPARATOR . $this->fileName . '.json';
     }
 
     public function save($data)
     {
-        file_put_contents($this->fileName, json_encode($data));
+        file_put_contents($this->getFilePath(), json_encode($data));
+        return $this;
     }
 
     public function load()
     {
-        return json_decode(file_get_contents($this->fileName), true);
+        return json_decode(file_get_contents($this->getFilePath()), true);
     }
 
 
